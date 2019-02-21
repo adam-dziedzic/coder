@@ -1,6 +1,8 @@
 #include <iostream>
 #include <algorithm>
 #include <iterator>
+#include <vector>
+#include <sstream>
 
 using namespace std;
 
@@ -116,6 +118,64 @@ string CorrectPath(string str, int i, int h, int w) {
     return result;
 }
 
+vector<int> from_string_to_vector(string input) {
+    vector<int> array;
+    input.pop_back(); // pop [
+    input = input.substr(1, input.size()); // pop [
+    int pos = input.find(",");
+    while (pos != string::npos) {
+        // cout << "input: " << input.substr(0, pos) << endl;
+        int number = stoi(input.substr(0, pos));
+        // cout << number << endl;
+        array.push_back(number);
+        input = input.substr(pos + 1, input.size() - pos - 1);
+        // cout << input << endl;
+        pos = input.find(",");
+    }
+    int number = stoi(input.substr(0, pos));
+    array.push_back(number);
+    return array;
+}
+
+string ScaleBalancing(string strArr[]) {
+    int pos = strArr[0].find(",");
+    // cout << "pos: " << pos << " " << strArr[0].substr(1, pos-1) << endl;
+    int l = stoi(strArr[0].substr(1, pos - 1));
+    int r = stoi(strArr[0].substr(pos + 1, strArr[0].size() - 1));
+    // cout << "l: " <<  l << " r:" << r << endl;
+
+    vector<int> array = from_string_to_vector(strArr[1]);
+//  for (int i : array) {
+//      cout << i << endl;
+//  }
+
+    for (int a : array) {
+        if (l + a == r || l == r + a)
+            return to_string(a);
+    }
+
+    int a, b;
+    for (int i = 0; i < array.size(); ++i) {
+        for (int j = i + 1; j < array.size(); ++j) {
+            if (array[i] < array[j]) {
+                a = array[i];
+                b = array[j];
+            } else {
+                a = array[j];
+                b = array[i];
+            }
+            if (l + a + b == r || l + a == r + b || l + b == r + a ||
+                l == r + a + b) {
+                return to_string(a) + "," + to_string(b);
+            }
+        }
+    }
+
+    // code goes here
+    return "not possible";
+
+}
+
 int main() {
 
     // keep this function call here
@@ -124,9 +184,15 @@ int main() {
     // cout << FirstReverse("adam");
     // cout << KaprekarsConstant(8352);
     // cout << KaprekarsConstant(8730);
-    max_square();
-    cout << endl;
-    cout << CorrectPath("r?d?drdd", 0, 0, 0);
+    // max_square();
+    // cout << endl;
+    // cout << CorrectPath("r?d?drdd", 0, 0, 0);
+
+    // string A[] = {"[3, 4]", "[1, 2, 7, 7]"};
+    // string A[] = {"[13, 4]", "[1, 2, 3, 6, 14]"};
+    // string A[] = {"[50, 9]", "[1, 2, 6, 7]"};
+    string A[] = {"[6, 1]", "[1, 10, 6, 5]"};
+    cout << ScaleBalancing(A);
     return 0;
 
 }
