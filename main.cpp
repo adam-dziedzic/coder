@@ -3,6 +3,7 @@
 #include <iterator>
 #include <vector>
 #include <sstream>
+#include <set>
 
 using namespace std;
 
@@ -176,6 +177,32 @@ string ScaleBalancing(string strArr[]) {
 
 }
 
+string VowelSquare(string strArr[], int size) {
+    char myvowels[] = {'a', 'e', 'i', 'o', 'u'};
+    set<char> vowels(myvowels, myvowels + 5);
+    for (int i = 0; i < size - 1; ++i) {
+        for (int j = 0; j < strArr[i].size() - 1; ++j) {
+            if (vowels.find(strArr[i][j]) != vowels.end() &&
+                vowels.find(strArr[i][j + 1]) != vowels.end() &&
+                vowels.find(strArr[i + 1][j]) != vowels.end() &&
+                vowels.find(strArr[i + 1][j + 1]) != vowels.end()) {
+                return to_string(i) + "-" + to_string(j);
+            }
+        }
+    }
+    return "not found";
+}
+
+int vowels() {
+    // string A[] = gets(stdin);
+    string A[] = {"aqrst",
+                  "ukaei",
+                  "ffooo"};
+    int size = sizeof(A) / sizeof(A[0]);
+    cout << VowelSquare(A, size);
+    return 0;
+}
+
 int main() {
 
     // keep this function call here
@@ -191,8 +218,9 @@ int main() {
     // string A[] = {"[3, 4]", "[1, 2, 7, 7]"};
     // string A[] = {"[13, 4]", "[1, 2, 3, 6, 14]"};
     // string A[] = {"[50, 9]", "[1, 2, 6, 7]"};
-    string A[] = {"[6, 1]", "[1, 10, 6, 5]"};
-    cout << ScaleBalancing(A);
+    // string A[] = {"[6, 1]", "[1, 10, 6, 5]"};
+    // cout << ScaleBalancing(A);
+    vowels();
     return 0;
 
 }
