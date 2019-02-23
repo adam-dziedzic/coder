@@ -4,6 +4,10 @@
 #include <vector>
 #include <sstream>
 #include <set>
+#include <utility>
+#include <climits>
+#include <algorithm>
+#include <cmath>
 
 using namespace std;
 
@@ -230,6 +234,111 @@ void mainEightQueens() {
     cout << EightQueens(A, size);
 }
 
+string ClosestEnemyII(string strArr[], int size) {
+    int row_size = strArr[0].size();
+    int a[size][row_size];
+    int x1, y1;
+    vector<pair<int, int> > twos;
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < row_size; ++j) {
+            a[i][j] = strArr[i][j] - '0';
+            if (a[i][j] == 1) {
+                x1 = i;
+                y1 = j;
+            } else if (a[i][j] == 2) {
+                twos.push_back(make_pair(i, j));
+            }
+        }
+    }
+    int distance = INT_MAX;
+    if (twos.size() == 0) return "0";
+    for (pair<int, int> p : twos) {
+        int x2 = p.first;
+        int y2 = p.second;
+
+        int dx_left;
+        int dx_right;
+        if (x1 < x2) {
+            dx_left = x1;
+            dx_right = row_size - x2;
+        } else {
+            dx_left = x2;
+            dx_right = row_size - 1;
+        }
+        int dx_side = dx_left + dx_right;
+        int dx = min(abs(x2 - x1), dx_side);
+
+        int dy_down;
+        int dy_up;
+        if (y1 < y2) {
+            dy_down = y1;
+            dy_up = size - y2;
+        } else {
+            dy_down = y2;
+            dy_up = size - y1;
+        }
+        int dy_side = dy_up + dy_down;
+        int dy = min(abs(y2 - y1), dy_side);
+
+        int delta = dx + dy;
+
+        if (delta < distance) {
+            distance = delta;
+        }
+
+    }
+    return to_string(distance);
+
+}
+
+int mainClosestEnemyII() {
+    string A[] = {"000", "100", "200"};
+    int size = sizeof(A) / sizeof(A[0]);
+    cout << ClosestEnemyII(A, size);
+    return 0;
+}
+
+string QuestionsMarks(string str) {
+    string result = "false";
+    for (int i = 0; i < str.size();) {
+        while ((str[i] < '0' || str[i] > '9') && i < str.size()) {
+            ++i;
+        }
+        if (i == str.size()) return result;
+        int first = str[i] - '0';
+        // cout << "first: " << first << endl;
+        ++i;
+        int q_count = 0;
+        while ((str[i] < '0' || str[i] > '9') && i < str.size()) {
+            if (str[i] == '?') {
+                ++q_count;
+            }
+            ++i;
+        }
+        if (i == str.size()) return result;
+        int second = str[i] - '0';
+        ++i;
+        // cout << "second: " << second << endl;
+        // cout << "q_count: " << q_count << endl;
+        if ((second + first) == 10) {
+            // cout << "q_count 2: " << q_count << endl;
+            if (q_count >= 3) {
+                result = "true";
+            } else {
+                result = "false";
+            }
+        }
+    }
+    return result;
+
+}
+
+int mainQuestionMarks() {
+    // keep this function call here
+    cout << QuestionsMarks("3???7??????5???5");
+    return 0;
+}
+
 int main() {
 
     // keep this function call here
@@ -248,7 +357,8 @@ int main() {
     // string A[] = {"[6, 1]", "[1, 10, 6, 5]"};
     // cout << ScaleBalancing(A);
     // vowels();
-    mainEightQueens();
+    // mainEightQueens();
+    // mainClosestEnemyII();
+    mainQuestionMarks();
     return 0;
-
 }
