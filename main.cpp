@@ -203,6 +203,33 @@ int vowels() {
     return 0;
 }
 
+string EightQueens(string strArr[], int size) {
+    for (int i = 0; i < size - 1; ++i) {
+        int x1 = strArr[i][1] - '0';
+        int y1 = strArr[i][3] - '0';
+        for (int j = i + 1; j < size; ++j) {
+            int x2 = strArr[j][1] - '0';
+            int y2 = strArr[j][3] - '0';
+            if ((x2 - x1 == y2 - y1) || (x1 == x2) || (y1 == y2)) {
+                return "(" + to_string(x1) + "," + to_string(y1) + ")";
+            }
+        }
+    }
+    return "true";
+}
+
+void mainEightQueens() {
+
+    // keep this function call here
+    /* Note: In C++ you first have to initialize an array and set
+       it equal to the stdin to test your code with arrays. */
+
+    string A[] = {"(2,1)", "(4,3)", "(6,3)", "(8,4)", "(3,4)", "(1,6)", "(7,7)",
+                  "(5,8)"};
+    int size = sizeof(A) / sizeof(A[0]);
+    cout << EightQueens(A, size);
+}
+
 int main() {
 
     // keep this function call here
@@ -220,7 +247,8 @@ int main() {
     // string A[] = {"[50, 9]", "[1, 2, 6, 7]"};
     // string A[] = {"[6, 1]", "[1, 10, 6, 5]"};
     // cout << ScaleBalancing(A);
-    vowels();
+    // vowels();
+    mainEightQueens();
     return 0;
 
 }
