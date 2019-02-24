@@ -339,7 +339,236 @@ int mainQuestionMarks() {
     return 0;
 }
 
+string ltrim(const string &);
+
+string rtrim(const string &);
+
+vector<string> split(const string &);
+
+// Complete the matrixRotation function below.
+
+/*
+You are given a 2D matrix of dimension and a positive integer . You have to
+rotate the matrix r times and print the resultant matrix.
+
+Rotation should be in anti-clockwise direction.
+
+Rotation of a matrix is represented by the following figure. Note that in one
+ rotation, you have to shift elements by one step only.
+ */
+void matrixRotation(vector<vector<int>> &matrix, int r, int x, int y,
+                    int m, int n) {
+    int elem_count = 2 * m + 2 * n - 4;
+    if (elem_count <= 1 || m <= 0 || n <= 0) return;
+    // gather elements in the one round of the matrix
+    vector<int> snake;
+
+    // go to right
+    int row = y;
+    for (int col = x; col < x + n; ++col) {
+        snake.push_back(matrix[row][col]);
+    }
+    // go down
+    if (m > 1) {
+        int col = x + n - 1;
+        // skip top right corner
+        for (int row = y + 1; row < y + m; ++row) {
+            snake.push_back(matrix[row][col]);
+        }
+    }
+    // go to left
+    if (m > 1) {
+        int row = y + m - 1;
+        for (int col = x + n - 2; col >= x; --col) {
+            snake.push_back(matrix[row][col]);
+        }
+    }
+    // go up
+    if (n > 1 && m > 1) {
+        int col = x;
+        for (int row = y + m - 2; row > y; --row) {
+            snake.push_back(matrix[row][col]);
+        }
+    }
+
+    // write elements out of the snake: snake index
+    int s = r % elem_count;
+
+    // go to right
+    row = y;
+    for (int col = x; col < x + n; ++col) {
+        matrix[row][col] = snake[s];
+        s = (s + 1) % elem_count;
+    }
+    // go down
+    if (m > 1) {
+        int col = x + n - 1;
+        // skip top right corner
+        for (int row = y + 1; row < y + m; ++row) {
+            matrix[row][col] = snake[s];
+            s = (s + 1) % elem_count;
+        }
+    }
+    // go to left
+    if (m > 1) {
+        int row = y + m - 1;
+        for (int col = x + n - 2; col >= x; --col) {
+            matrix[row][col] = snake[s];
+            s = (s + 1) % elem_count;
+        }
+    }
+    // go up
+    if (n > 1 && m > 1) {
+        int col = x;
+        for (int row = y + m - 2; row > y; --row) {
+            matrix[row][col] = snake[s];
+            s = (s + 1) % elem_count;
+        }
+    }
+
+    return matrixRotation(matrix, r, x + 1, y + 1, m - 2, n - 2);
+
+}
+
+int mainMatrixRotation() {
+    string mnr_temp;
+    getline(cin, mnr_temp);
+
+    vector<string> mnr = split(rtrim(mnr_temp));
+
+    int m = stoi(mnr[0]);
+
+    int n = stoi(mnr[1]);
+
+    int r = stoi(mnr[2]);
+
+    vector<vector<int>> matrix(m);
+
+    for (int i = 0; i < m; i++) {
+        matrix[i].resize(n);
+
+        string matrix_row_temp_temp;
+        getline(cin, matrix_row_temp_temp);
+
+        vector<string> matrix_row_temp = split(rtrim(matrix_row_temp_temp));
+
+        for (int j = 0; j < n; j++) {
+            int matrix_row_item = stoi(matrix_row_temp[j]);
+
+            matrix[i][j] = matrix_row_item;
+        }
+    }
+
+    matrixRotation(matrix, r, 0, 0, m, n);
+
+    return 0;
+}
+
+int mainMatrixRotationInput() {
+    // Test case 1:
+    //    int m = 4;
+    //    int n = 4;
+    //    int r = 2;
+    //
+    //    vector<vector<int>> matrix = {{1,  2,  3,  4},
+    //                                  {5,  6,  7,  8},
+    //                                  {9,  10, 11, 12},
+    //                                  {13, 14, 15, 16}};
+    //
+    // Test case 2:
+    //    int m = 5;
+    //    int n = 4;
+    //    int r = 7;
+    //
+    //    vector<vector<int>> matrix = {{1,  2,  3,  4},
+    //                                  {7,  8,  9,  10},
+    //                                  {13, 14, 15, 16},
+    //                                  {19, 20, 21, 22},
+    //                                  {25, 26, 27, 28}};
+    //
+    // Test case 3:
+    //    int m = 2;
+    //    int n = 2;
+    //    int r = 3;
+    //
+    //    vector<vector<int>> matrix = {{1,1},{1,1}};
+    // Test case 4:
+    int m = 10;
+    int n = 8;
+    int r = 40;
+
+    vector<vector<int>> matrix(m);
+    int i = 0;
+    for (int row = 0; row < m; ++row) {
+        matrix[row].resize(n);
+        for (int col = 0; col < n; ++col) {
+            matrix[row][col] = i++;
+        }
+    }
+
+    // print matrix
+    for (int row = 0; row < m; ++row) {
+        for (int col = 0; col < n; ++col) {
+            cout << matrix[row][col] << " ";
+        }
+        cout << std::endl;
+    }
+    cout << std::endl;
+
+    matrixRotation(matrix, r, 0, 0, m, n);
+
+
+    // print matrix
+    for (int row = 0; row < m; ++row) {
+        for (int col = 0; col < n; ++col) {
+            cout << matrix[row][col] << " ";
+        }
+        cout << std::endl;
+    }
+
+    return 0;
+}
+
+string ltrim(const string &str) {
+    string s(str);
+
+    s.erase(s.begin(),
+            find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace))));
+
+    return s;
+}
+
+string rtrim(const string &str) {
+    string s(str);
+
+    s.erase(
+            find_if(s.rbegin(), s.rend(),
+                    not1(ptr_fun<int, int>(isspace))).base(),
+            s.end());
+
+    return s;
+}
+
+vector<string> split(const string &str) {
+    vector<string> tokens;
+
+    string::size_type start = 0;
+    string::size_type end = 0;
+
+    while ((end = str.find(" ", start)) != string::npos) {
+        tokens.push_back(str.substr(start, end - start));
+
+        start = end + 1;
+    }
+
+    tokens.push_back(str.substr(start));
+
+    return tokens;
+}
+
+
 int main() {
+    cout << "algorithms" << std::endl;
 
     // keep this function call here
     // cout << FirstReverse(gets(stdin));
@@ -359,6 +588,8 @@ int main() {
     // vowels();
     // mainEightQueens();
     // mainClosestEnemyII();
-    mainQuestionMarks();
+    // mainQuestionMarks();
+    // mainMatrixRotation();
+    mainMatrixRotationInput();
     return 0;
 }
