@@ -8,6 +8,8 @@
 #include <climits>
 #include <algorithm>
 #include <cmath>
+#include <bits/stdc++.h>
+#include <cstdlib>
 
 using namespace std;
 
@@ -566,6 +568,87 @@ vector<string> split(const string &str) {
     return tokens;
 }
 
+// Complete the formingMagicSquare function below.
+int formingMagicSquare(vector<vector<int>> s) {
+    int min_cost = INT_MAX;
+    vector<vector<vector<int>>> templates = {
+        {
+            {8,3,4},
+            {1,5,9},
+            {6,7,2}
+        },
+        {
+            {6,7,2},
+            {1,5,9},
+            {8,3,4}
+        },
+        {
+            {4,9,2},
+            {3,5,7},
+            {8,1,6}
+        },
+        {
+            {2,9,4},
+            {7,5,3},
+            {6,1,8}
+        },
+        {
+            {2,7,6},
+            {9,5,1},
+            {4,3,8}
+        },
+        {
+            {4,3,8},
+            {9,5,1},
+            {2,7,6}
+        },
+        {
+            {6,1,8},
+            {7,5,3},
+            {2,9,4}
+        },
+        {
+            {8,1,6},
+            {3,5,7},
+            {4,9,2}
+        }
+    };
+    for (vector<vector<int>> temp : templates) {
+        int cost = 0;
+        for (int i=0; i<3; ++i) {
+            for (int j=0; j<3; ++j) {
+                cost += abs(temp[i][j] - s[i][j]);
+            }
+        }
+        if (cost < min_cost) min_cost = cost;
+    }
+    return min_cost;
+}
+
+int mainFormingMagicSquares()
+{
+
+//    vector<vector<int>> s(3);
+//    for (int i = 0; i < 3; i++) {
+//        s[i].resize(3);
+//
+//        for (int j = 0; j < 3; j++) {
+//            cin >> s[i][j];
+//        }
+//
+//        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+//    }
+
+    vector<vector<int>> s = {{5,3,4},{1,5,8},{6,4,2}};
+
+    int result = formingMagicSquare(s);
+
+    cout << result << "\n";
+
+    return 0;
+}
+
+
 
 int main() {
     cout << "algorithms" << std::endl;
@@ -590,6 +673,7 @@ int main() {
     // mainClosestEnemyII();
     // mainQuestionMarks();
     // mainMatrixRotation();
-    mainMatrixRotationInput();
+    // mainMatrixRotationInput();
+    mainFormingMagicSquares();
     return 0;
 }
