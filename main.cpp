@@ -854,6 +854,45 @@ int mainMean() {
     return 0;
 }
 
+int mainWeightedAverage() {
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */
+    int count;
+    cin >> count;
+    vector<int> nums;
+    vector<int> mass;
+    for (int i = 0; i < count; ++i) {
+        int c;
+        cin >> c;
+        nums.push_back(c);
+    }
+    for (int i = 0; i < count; ++i) {
+        int c;
+        cin >> c;
+        mass.push_back(c);
+    }
+    int num = 0;
+    int den = 0;
+    for (int i = 0; i < count; ++i) {
+        num += nums[i] * mass[i];
+        den += mass[i];
+    }
+    cout << std::setprecision(1) << fixed << 1.0 * num / den << endl;
+    return 0;
+}
+
+int maximumToys(vector<int> prices, int k) {
+    sort(prices.begin(), prices.end());
+    int p = 0;
+    int i = 0;
+    while(i < prices.size()) {
+        if ((prices[i] + p) > k) {
+            break;
+        }
+        p += prices[i];
+        ++i;
+    }
+    return i;
+}
 
 int main() {
     // cout << "algorithms" << std::endl;
