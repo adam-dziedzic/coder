@@ -10,6 +10,7 @@
 #include <cmath>
 #include <bits/stdc++.h>
 #include <cstdlib>
+#include <cstdio>
 
 using namespace std;
 
@@ -808,9 +809,54 @@ vector<string> split_string(string input_string) {
 }
 
 
-int main() {
-    cout << "algorithms" << std::endl;
+int mainMean() {
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */
+    int counter = 10;
+    // cin >> counter;
+    // cout << "counter: " << counter << endl;
+    if (counter == 0) {
+        cout << 0 << endl << 0 << endl << 0 << endl;
+    }
+    vector<int> list = {64630,11735,14216,99233,14470,4978,73429,38120,51135,67060};
+    int sum = 0;
+    for (int i=0; i < counter; ++i) {
+        // int c;
+        // cin >> c;
+        // list.push_back(c);
+        // cout << i << " " << list[i] << endl;
+        sum += list[i];
+    }
+    cout << (1.0 * sum) / counter << endl;
+    sort(list.begin(), list.end());
+    int half = int(counter/2);
+    if (counter % 2 == 1) {
+        cout << list[half] << endl;
+    } else {
+        cout << (list[half-1] + list[half]) / 2.0 << endl;
+    }
+    int mode = list[0];
+    int mode_count = 1;
+    int current = list[0];
+    int current_count = 1;
+    for (int i = 1; i < list.size(); ++i) {
+        if (list[i] == current) {
+            ++current_count;
+        } else {
+            if (current_count > mode_count) {
+                mode_count = current_count;
+                mode = current;
+            }
+            current_count = 1;
+            current = list[i];
+        }
+    }
+    cout << mode << endl;
+    return 0;
+}
 
+
+int main() {
+    // cout << "algorithms" << std::endl;
     // keep this function call here
     // cout << FirstReverse(gets(stdin));
     // cout << FirstReverse("coderbyte");
@@ -833,6 +879,7 @@ int main() {
     // mainMatrixRotation();
     // mainMatrixRotationInput();
     // mainFormingMagicSquares();
-    mainAlice();
+    // mainAlice();
+    mainMean();
     return 0;
 }
