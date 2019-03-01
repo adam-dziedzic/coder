@@ -11,6 +11,7 @@
 #include <bits/stdc++.h>
 #include <cstdlib>
 #include <cstdio>
+#include <iomanip>
 
 using namespace std;
 
@@ -894,6 +895,110 @@ int maximumToys(vector<int> prices, int k) {
     return i;
 }
 
+int mainStandardDeviation() {
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */
+    int N;
+    cin >> N;
+    vector<int> X;
+    int sum = 0;
+    for (int i = 0; i < N; ++i) {
+        int x;
+        cin >> x;
+        X.push_back(x);
+        sum += x;
+    }
+    double mean = 1.0 * sum / N;
+    double squared_sum = 0.0;
+    for (int i = 0; i < N; ++i) {
+        squared_sum += pow((X[i] - mean), 2.0);
+    }
+    cout << std::fixed << std::setprecision(1) << sqrt(squared_sum / N);
+    return 0;
+}
+
+int median(vector<int> X) {
+    int size = X.size();
+    if (size % 2 == 0) {
+        int upper = size / 2;
+        int lower = upper - 1;
+        return (X[lower] + X[upper]) / 2;
+    } else {
+        return X[size / 2];
+    }
+}
+
+
+int mainQuartiles() {
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */
+    int N;
+    cin >> N;
+    vector<int> X;
+    for (int i=0; i<N; ++i) {
+        int x;
+        cin >> x;
+        X.push_back(x);
+    }
+    sort(X.begin(), X.end());
+    int size = X.size();
+    int half = size / 2;
+    vector<int> lower_half(X.begin(), X.begin() + half);
+    cout << median(lower_half) << endl;
+    cout << median(X) << endl;
+    if (size % 2 == 0) {
+        vector<int> upper_half(X.begin() + half, X.end());
+        cout << median(upper_half) << endl;
+    } else {
+        vector<int> upper_half(X.begin() + half + 1, X.end());
+        cout << median(upper_half) << endl;
+    }
+    return 0;
+}
+
+pair<double, double> Quartiles(vector<int> X) {
+    sort(X.begin(), X.end());
+    int size = X.size();
+    int half = size / 2;
+    vector<int> lower_half(X.begin(), X.begin() + half);
+    double q1 = median(lower_half);
+    double q2;
+    if (size % 2 == 0) {
+        vector<int> upper_half(X.begin() + half, X.end());
+        q2 = median(upper_half);
+    } else {
+        vector<int> upper_half(X.begin() + half + 1, X.end());
+        q2 = median(upper_half);
+    }
+    return make_pair(q1, q2);
+}
+
+int mainInterQuartileRange() {
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */
+    int N;
+    cin >> N;
+    vector<int> I;
+    for (int i = 0; i < N; ++i) {
+        int x;
+        cin >> x;
+        I.push_back(x);
+    }
+    vector<int> F;
+    for (int i = 0; i < N; ++i) {
+        int f;
+        cin >> f;
+        F.push_back(f);
+    }
+    vector<int> X;
+    for (int i = 0; i < N; ++i) {
+        for (int j = 0; j < F[i]; ++j) {
+            X.push_back(I[i]);
+        }
+    }
+    pair<double, double> quartiles = Quartiles(X);
+    cout << quartiles.second - quartiles.first;
+    return 0;
+}
+
+
 int main() {
     // cout << "algorithms" << std::endl;
     // keep this function call here
@@ -919,6 +1024,7 @@ int main() {
     // mainMatrixRotationInput();
     // mainFormingMagicSquares();
     // mainAlice();
-    mainMean();
+    // mainMean();
+    mainInterQuartileRange();
     return 0;
 }
