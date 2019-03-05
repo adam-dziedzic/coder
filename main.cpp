@@ -574,51 +574,51 @@ vector<string> split(const string &str) {
 int formingMagicSquare(vector<vector<int>> s) {
     int min_cost = INT_MAX;
     vector<vector<vector<int>>> templates = {
-        {
-            {8,3,4},
-            {1,5,9},
-            {6,7,2}
-        },
-        {
-            {6,7,2},
-            {1,5,9},
-            {8,3,4}
-        },
-        {
-            {4,9,2},
-            {3,5,7},
-            {8,1,6}
-        },
-        {
-            {2,9,4},
-            {7,5,3},
-            {6,1,8}
-        },
-        {
-            {2,7,6},
-            {9,5,1},
-            {4,3,8}
-        },
-        {
-            {4,3,8},
-            {9,5,1},
-            {2,7,6}
-        },
-        {
-            {6,1,8},
-            {7,5,3},
-            {2,9,4}
-        },
-        {
-            {8,1,6},
-            {3,5,7},
-            {4,9,2}
-        }
+            {
+                    {8, 3, 4},
+                    {1, 5, 9},
+                    {6, 7, 2}
+            },
+            {
+                    {6, 7, 2},
+                    {1, 5, 9},
+                    {8, 3, 4}
+            },
+            {
+                    {4, 9, 2},
+                    {3, 5, 7},
+                    {8, 1, 6}
+            },
+            {
+                    {2, 9, 4},
+                    {7, 5, 3},
+                    {6, 1, 8}
+            },
+            {
+                    {2, 7, 6},
+                    {9, 5, 1},
+                    {4, 3, 8}
+            },
+            {
+                    {4, 3, 8},
+                    {9, 5, 1},
+                    {2, 7, 6}
+            },
+            {
+                    {6, 1, 8},
+                    {7, 5, 3},
+                    {2, 9, 4}
+            },
+            {
+                    {8, 1, 6},
+                    {3, 5, 7},
+                    {4, 9, 2}
+            }
     };
     for (vector<vector<int>> temp : templates) {
         int cost = 0;
-        for (int i=0; i<3; ++i) {
-            for (int j=0; j<3; ++j) {
+        for (int i = 0; i < 3; ++i) {
+            for (int j = 0; j < 3; ++j) {
                 cost += abs(temp[i][j] - s[i][j]);
             }
         }
@@ -627,8 +627,7 @@ int formingMagicSquare(vector<vector<int>> s) {
     return min_cost;
 }
 
-int mainFormingMagicSquares()
-{
+int mainFormingMagicSquares() {
 
 //    vector<vector<int>> s(3);
 //    for (int i = 0; i < 3; i++) {
@@ -641,7 +640,9 @@ int mainFormingMagicSquares()
 //        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 //    }
 
-    vector<vector<int>> s = {{5,3,4},{1,5,8},{6,4,2}};
+    vector<vector<int>> s = {{5, 3, 4},
+                             {1, 5, 8},
+                             {6, 4, 2}};
 
     int result = formingMagicSquare(s);
 
@@ -657,7 +658,7 @@ vector<string> split_string(string);
 vector<int> climbingLeaderboard(vector<int> scores, vector<int> alice) {
     vector<int> ranks;
     if (scores.empty()) {
-        for (int i=0; i < alice.size(); ++i) {
+        for (int i = 0; i < alice.size(); ++i) {
             ranks.push_back(1);
         }
         return ranks;
@@ -670,10 +671,10 @@ vector<int> climbingLeaderboard(vector<int> scores, vector<int> alice) {
             last_score = score;
         }
     }
-    int s = unique_scores.size()-1;
-    for (int i=0; i < alice.size();) {
+    int s = unique_scores.size() - 1;
+    for (int i = 0; i < alice.size();) {
         if (s < 0 || alice[i] < unique_scores[s]) {
-            ranks.push_back(s+2);
+            ranks.push_back(s + 2);
             ++i;
         } else {
             --s;
@@ -686,7 +687,7 @@ vector<int> climbingLeaderboard(vector<int> scores, vector<int> alice) {
 vector<int> climbingLeaderboard2(vector<int> scores, vector<int> alice) {
     vector<int> ranks;
     if (scores.empty()) {
-        for (int i=0; i < alice.size(); ++i) {
+        for (int i = 0; i < alice.size(); ++i) {
             ranks.push_back(1);
         }
         return ranks;
@@ -701,9 +702,9 @@ vector<int> climbingLeaderboard2(vector<int> scores, vector<int> alice) {
     }
     for (int score : alice) {
         int left = 0;
-        int right = unique_scores.size()-1;
+        int right = unique_scores.size() - 1;
         while (left < right) {
-            int half = int((left+right)/2);
+            int half = int((left + right) / 2);
             if (unique_scores[half] > score) {
                 left = half + 1;
             } else if (unique_scores[half] < score) {
@@ -721,8 +722,7 @@ vector<int> climbingLeaderboard2(vector<int> scores, vector<int> alice) {
     return ranks;
 }
 
-int mainAlice()
-{
+int mainAlice() {
 //    ofstream fout(getenv("OUTPUT_PATH"));
 //
 //    int scores_count;
@@ -762,8 +762,8 @@ int mainAlice()
     // vector<int> scores = {295,294,291,287,287,285,285,284,283,279,277,274,274,271,270,268,268,268,264,260,259,258,257,255,252,250,244,241,240,237,236,236,231,227,227,227,226,225,224,223,216,212,200,197,196,194,193,189,188,187,183,182,178,177,173,171,169,165,143,140,137,135,133,130,130,130,128,127,122,120,116,114,113,109,106,103,99,92,85,81,69,68,63,63,63,61,57,51,47,46,38,30,28,25,22,15,14,12,6,4};
     // vector<int> alice = {5,5,6,14,19,20,23,25,29,29,30,30,32,37,38,38,38,41,41,44,45,45,47,59,59,62,63,65,67,69,70,72,72,76,79,82,83,90,91,92,93,98,98,100,100,102,103,105,106,107,109,112,115,118,118,121,122,122,123,125,125,125,127,128,131,131,133,134,139,140,141,143,144,144,144,144,147,150,152,155,156,160,164,164,165,165,166,168,169,170,171,172,173,174,174,180,184,187,187,188,194,197,197,197,198,201,202,202,207,208,211,212,212,214,217,219,219,220,220,223,225,227,228,229,229,233,235,235,236,242,242,245,246,252,253,253,257,257,260,261,266,266,268,269,271,271,275,276,281,282,283,284,285,287,289,289,295,296,298,300,300,301,304,306,308,309,310,316,318,318,324,326,329,329,329,330,330,332,337,337,341,341,349,351,351,354,356,357,366,369,377,379,380,382,391,391,394,396,396,400};
 
-    vector<int> scores = {100,100,50,40,40,20,10};
-    vector<int> alice = {5,25,50,120};
+    vector<int> scores = {100, 100, 50, 40, 40, 20, 10};
+    vector<int> alice = {5, 25, 50, 120};
 
     vector<int> result = climbingLeaderboard(scores, alice);
 
@@ -781,9 +781,10 @@ int mainAlice()
 }
 
 vector<string> split_string(string input_string) {
-    string::iterator new_end = unique(input_string.begin(), input_string.end(), [] (const char &x, const char &y) {
-        return x == y and x == ' ';
-    });
+    string::iterator new_end = unique(input_string.begin(), input_string.end(),
+                                      [](const char &x, const char &y) {
+                                          return x == y and x == ' ';
+                                      });
 
     input_string.erase(new_end, input_string.end());
 
@@ -804,7 +805,8 @@ vector<string> split_string(string input_string) {
         pos = input_string.find(delimiter, i);
     }
 
-    splits.push_back(input_string.substr(i, min(pos, input_string.length()) - i + 1));
+    splits.push_back(
+            input_string.substr(i, min(pos, input_string.length()) - i + 1));
 
     return splits;
 }
@@ -818,9 +820,10 @@ int mainMean() {
     if (counter == 0) {
         cout << 0 << endl << 0 << endl << 0 << endl;
     }
-    vector<int> list = {64630,11735,14216,99233,14470,4978,73429,38120,51135,67060};
+    vector<int> list = {64630, 11735, 14216, 99233, 14470, 4978, 73429, 38120,
+                        51135, 67060};
     int sum = 0;
-    for (int i=0; i < counter; ++i) {
+    for (int i = 0; i < counter; ++i) {
         // int c;
         // cin >> c;
         // list.push_back(c);
@@ -829,11 +832,11 @@ int mainMean() {
     }
     cout << (1.0 * sum) / counter << endl;
     sort(list.begin(), list.end());
-    int half = int(counter/2);
+    int half = int(counter / 2);
     if (counter % 2 == 1) {
         cout << list[half] << endl;
     } else {
-        cout << (list[half-1] + list[half]) / 2.0 << endl;
+        cout << (list[half - 1] + list[half]) / 2.0 << endl;
     }
     int mode = list[0];
     int mode_count = 1;
@@ -885,7 +888,7 @@ int maximumToys(vector<int> prices, int k) {
     sort(prices.begin(), prices.end());
     int p = 0;
     int i = 0;
-    while(i < prices.size()) {
+    while (i < prices.size()) {
         if ((prices[i] + p) > k) {
             break;
         }
@@ -933,7 +936,7 @@ int mainQuartiles() {
     int N;
     cin >> N;
     vector<int> X;
-    for (int i=0; i<N; ++i) {
+    for (int i = 0; i < N; ++i) {
         int x;
         cin >> x;
         X.push_back(x);
@@ -999,6 +1002,54 @@ int mainInterQuartileRange() {
 }
 
 
+int factorial(int n) {
+    return (n == 0) || (n == 1) ? 1 : factorial(n-1) * n;
+}
+
+double poisson(double avg, int k) {
+    return pow(avg, k) * exp(-avg) / factorial(k);
+}
+
+int nk(int n, int k) {
+    return factorial(n) / (factorial(k) * factorial(n - k));
+}
+
+double binomial(int x, int n, double p) {
+    return nk(n, x) * pow(p, x) * pow((1 - p), n - x);
+}
+
+// geometric distribution
+double gem_dis(int n, double p) {
+    return pow((1-p), n-1) * p;
+}
+
+int mainBinomial() {
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */
+//    double ratio;
+//    cin >> ratio;
+//    int child_per_birth;
+//    cin >> child_per_birth;
+    double p = 1.09 / 2.09;
+    // double p = 0.5;
+    double result = 0.0;
+    int min = 3;
+    int max = 6;
+    int n = 6;  // number of trials
+    for (int i = min; i <= max; ++i) {
+        result += binomial(i, n, p);
+    }
+    std::cout << std::fixed << std::setprecision(3) << result;
+    return 0;
+}
+
+int mainPoisson() {
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */
+    std::cout << std::fixed << std::setprecision(3) << 160.0 + 40.0 * pow(0.88, 2) << std::endl;
+    std::cout << std::fixed << std::setprecision(3) << 128.0 + 40.0 * pow(1.55, 2) << std::endl;
+    return 0;
+}
+
+
 int main() {
     // cout << "algorithms" << std::endl;
     // keep this function call here
@@ -1025,6 +1076,11 @@ int main() {
     // mainFormingMagicSquares();
     // mainAlice();
     // mainMean();
-    mainInterQuartileRange();
+    // mainInterQuartileRange();
+    // std::cout << "e: " << exp(1) << std::endl;
+    // mainBinomial();
+    std::cout << poisson(0.88, 0.88) << std::endl;
+    std::cout << poisson(1.55, 1.55) << std::endl;
+    mainPoisson();
     return 0;
 }
