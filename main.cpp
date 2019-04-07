@@ -1003,7 +1003,7 @@ int mainInterQuartileRange() {
 
 
 int factorial(int n) {
-    return (n == 0) || (n == 1) ? 1 : factorial(n-1) * n;
+    return (n == 0) || (n == 1) ? 1 : factorial(n - 1) * n;
 }
 
 double poisson(double avg, int k) {
@@ -1020,7 +1020,7 @@ double binomial(int x, int n, double p) {
 
 // geometric distribution
 double gem_dis(int n, double p) {
-    return pow((1-p), n-1) * p;
+    return pow((1 - p), n - 1) * p;
 }
 
 int mainBinomial() {
@@ -1044,9 +1044,248 @@ int mainBinomial() {
 
 int mainPoisson() {
     /* Enter your code here. Read input from STDIN. Print output to STDOUT */
-    std::cout << std::fixed << std::setprecision(3) << 160.0 + 40.0 * pow(0.88, 2) << std::endl;
-    std::cout << std::fixed << std::setprecision(3) << 128.0 + 40.0 * pow(1.55, 2) << std::endl;
+    std::cout << std::fixed << std::setprecision(3)
+              << 160.0 + 40.0 * pow(0.88, 2) << std::endl;
+    std::cout << std::fixed << std::setprecision(3)
+              << 128.0 + 40.0 * pow(1.55, 2) << std::endl;
     return 0;
+}
+
+
+void removeZeros(string &A) {
+    int from = 0;
+    for (int i = 0; i < A.length(); ++i) {
+        if (A.substr(i, 1) == "0") {
+            ++from;
+        } else {
+            break;
+        }
+    }
+    if (from == A.length()) {
+        A = "0";
+    } else {
+        A = A.substr(from);
+    }
+}
+
+
+bool getAB(const string &N, string &A, string &B, int pos, bool is_overflow) {
+    if (pos < 0) {
+        return true;
+    }
+    int c = N[pos] - 48; // current digit
+    if (is_overflow) c -= 1;
+    for (int a = 0; a <= 9; ++a) {  // a digit
+        if (a == 4) continue;
+        int b = c - a;
+        if (b == 4) continue;
+        string newA = to_string(a) + A;
+        string newB = to_string(b) + B;
+        bool is_correct = getAB(N, newA, newB, pos - 1, false);
+        if (is_correct) {
+            A = newA;
+            B = newB;
+            return true;
+        }
+    }
+    for (int a = 0; a <= 9; ++a) {  // a digit
+        if (a == 4) continue;
+        int b = 10 + c - a;
+        if (b == 4 || b > 9) continue;
+        string newA = to_string(a) + A;
+        string newB = to_string(b) + B;
+        bool is_correct = getAB(N, newA, newB, pos - 1, true);
+        if (is_correct) {
+            A = newA;
+            B = newB;
+            return true;
+        }
+    }
+}
+
+
+int mainP1() {
+    int n = 1;
+    // cin >> n;
+    for (int i = 1; i <= n; ++i) {
+        int N = 434;
+        // cin >> N;
+        string A = "";
+        string B = "";
+        string Ns = to_string(N);
+        getAB(Ns, A, B, Ns.length() - 1, false);
+        removeZeros(A);
+        removeZeros(B);
+        cout << "Case #" << i << ": " << A << " " << B << endl;
+    }
+}
+
+bool getPath(int N, bool **ary, string &S, int h, int w) {
+    bool result;
+    string newS;
+    if (h == N - 1 && w == N - 1) {
+        return true;
+    }
+    if (h < N - 1) {
+        if (ary[h][w] == false || ary[h + 1][w] == false) {
+            newS = S + "S";
+            result = getPath(N, ary, newS, h + 1, w);
+            if (result == true) {
+                S = newS;
+                return true;
+            }
+        }
+    }
+    if (w < N - 1) {
+        if (ary[h][w] == false || ary[h][w + 1] == false) {
+            newS = S + "E";
+            result = getPath(N, ary, newS, h, w + 1);
+            if (result == true) {
+                S = newS;
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+
+bool getPath2(int N, bool **ary, string &S, int h, int w) {
+    bool result;
+    string newS;
+
+    if (w == N - 1 && h + 1 == N - 1) {
+        S += "S";
+        return true;
+    }
+    if (h == N - 1 && w + 1 == N - 1) {
+        S += "E";
+        return true;
+    }
+    if (h + 1 < N && ary[h + 1][w] == true) {
+        if (w + 1 < N && ary[h+1][w+1] == true) {
+            newS = S + "E";
+            result = getPath2(N, ary, newS, h, w+1);
+            if (result == true) {
+                S = newS;
+                return true;
+            }
+            if (h + 2 < N && ary[h + 2][w] == false) {  // cross south
+                newS = S + "SS";
+                result = getPath2(N, ary, newS, h+2, w);
+                if (result == true) {
+                    S = newS;
+                    return true;
+                }
+            }
+        }
+        if (w + 1 < N) {
+            newS = S + "SE";
+            result = getPath2(N, ary, newS, h + 1, w + 1);
+            if (result == true) {
+                S = newS;
+                return true;
+            }
+        }
+    }
+    if (w + 1 < N && ary[h][w+1] == true) {
+        if (h + 1 < N && ary[h+1][w+1] == true) {
+            newS = S + "S";
+            result = getPath2(N, ary, newS, h + 1, w);
+            if (result == true) {
+                S = newS;
+                return true;
+            }
+            if (w + 2 < N && ary[h][w+2] == false) {  // cross east
+                newS = S + "EE";
+                result = getPath2(N, ary, newS, h, w+2);
+                if (result == true) {
+                    S = newS;
+                    return true;
+                }
+            }
+        }
+
+        if (h + 1 < N) {
+            newS = S + "ES";
+            result = getPath2(N, ary, newS, h + 1, w + 1);
+            if (result == true) {
+                S = newS;
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+
+string getPathSolution(int N, string P) {
+    string S = "";  // solution
+    bool **ary = new bool *[N];
+    for (int i = 0; i < N; ++i) {
+        ary[i] = new bool[N];
+    }
+    for (int i = 0; i < N; ++i) {
+        for (int j = 0; j < N; ++j) {
+            ary[i][j] = false;
+        }
+    }
+    ary[0][0] = true;
+    int h = 0;
+    int w = 0;
+    for (int i = 0; i < P.length(); ++i) {
+        char d = P[i];
+        if (d == 'S') {
+            ++h;
+        } else {
+            ++w;
+        }
+        ary[h][w] = true;
+    }
+    for (int i = 0; i < N; ++i) {
+        for (int j = 0; j < N; ++j) {
+            cout << ary[i][j] << " ";
+        }
+        cout << endl;
+    }
+
+    if (P[0] == 'E' && P[1] == 'E') {
+        S = "SE";
+        getPath2(N, ary, S, 1, 1);
+    } else if (P[0] == 'E' && P[1] == 'S') {
+        S = "S";
+        getPath2(N, ary, S, 1, 0);
+    } else if (P[0] == 'S' && P[1] == 'S') {
+        S = "ES";
+        getPath2(N, ary, S, 1, 1);
+    } else if (P[0] == 'S' && P[1] == 'S') {
+        S = "E";
+        getPath2(N, ary, S, 0, 1);
+    }
+
+    for (int i = 0; i < N; ++i) {
+        delete[] ary[i];
+    }
+    delete[] ary;
+
+    return S;
+}
+
+int mainP2() {
+    int T = 1;
+    // cin >> T;
+    for (int i = 1; i <= T; ++i) {
+        int N = 5;
+        // int N = 2;
+        // cin >> N;
+        string P = "EESSSESE";
+        // string P = "SEEESSES";
+        // string P = "ES";
+        // std::getline(std::cin, P);
+        string S = getPathSolution(N, P);
+        cout << "Case #" << i << ": " << S << endl;
+    }
 }
 
 
@@ -1079,8 +1318,10 @@ int main() {
     // mainInterQuartileRange();
     // std::cout << "e: " << exp(1) << std::endl;
     // mainBinomial();
-    std::cout << poisson(0.88, 0.88) << std::endl;
-    std::cout << poisson(1.55, 1.55) << std::endl;
-    mainPoisson();
+    // std::cout << poisson(0.88, 0.88) << std::endl;
+    // std::cout << poisson(1.55, 1.55) << std::endl;
+    // mainPoisson();
+    // mainP1();
+    mainP2();
     return 0;
 }
